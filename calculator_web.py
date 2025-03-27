@@ -2,11 +2,49 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# 페이지 설정
 st.set_page_config(page_title="💰 시세 비교 계산기", page_icon="💸")
+
+# 스타일 커스터마이징
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #f0f2f6;
+    }
+    h1 {
+        color: #ff4b4b;
+        text-align: center;
+    }
+    .stNumberInput > div > div > input {
+        border-radius: 10px;
+        border: 1px solid #ff4b4b;
+    }
+    .stRadio > div > label {
+        color: #ff4b4b;
+    }
+    .stButton>button {
+        background-color: #ff4b4b;
+        color: white;
+        border-radius: 10px;
+        height: 3em;
+        width: 100%;
+        border: none;
+    }
+    .stButton>button:hover {
+        background-color: #ff6b6b;
+    }
+    .stSuccess {
+        background-color: #d4edda;
+        color: #155724;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 st.title("💸 금전 ↔ 현금 시세 비교 계산기")
 
-# 금전 or 현금 입력 선택
+# 계산 모드 선택
 mode = st.radio("계산 모드 선택", ["금전 → 현금", "현금 → 금전"])
 
 # 시세 입력 (최대 5개)
@@ -18,7 +56,7 @@ for i in range(num_rates):
     rate = st.number_input(f"시세 {i+1} (예: 150)", min_value=1.0, value=150.0 + i * 10)
     rate_inputs.append(rate)
 
-# 계산 기준 값 입력
+# 금전 또는 현금 입력
 if mode == "금전 → 현금":
     gm = st.number_input("💰 내가 가진 금전 (원)", min_value=0.0, value=30_000_000.0, step=100000.0)
     results = [(gm / 1_000_000) * r for r in rate_inputs]
